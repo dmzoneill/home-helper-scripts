@@ -1,3 +1,5 @@
 **/DbVisualizer/**
 organise_log
 .skip
+debug
+error

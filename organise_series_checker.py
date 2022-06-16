@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 delete = False
 special = False
@@ -22,15 +23,27 @@ def set_folder_art(series_name):
     gio_cmd = "gio set -t unset \"" + root + "/" + series_name + "\" metadata::custom-icon"
     if os.path.exists(root + "/" + series_name + "/folder.jpg"):
         gio_cmd = "gio set \"" + root + "/" + series_name + "\" metadata::custom-icon \"file://" + root + "/" + series_name + "/folder.jpg\""
-    os.system(gio_cmd)     
+    # os.system(gio_cmd)     
+    proc = subprocess.Popen(gio_cmd, stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
     print(gio_cmd)
+    if out.decode('ascii').strip() != "":
+        print("Out: " + out.decode('ascii'))
+    if err is not None:
+        print("Err: " + err.decode('ascii'))
 
 def set_folder_art_season(series_name, season):   
     gio_cmd = "gio set -t unset \"" + root + "/" + series_name + "/" + season + "\" metadata::custom-icon"
     if os.path.exists(root + "/" + series_name + "/" + season + "/folder.jpg"):
         gio_cmd = "gio set \"" + root + "/" + series_name + "/" + season + "\" metadata::custom-icon \"file://" + root + "/" + series_name  + "/" + season + "/folder.jpg\""
-    os.system(gio_cmd)     
+    # os.system(gio_cmd)     
+    proc = subprocess.Popen(gio_cmd, stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
     print(gio_cmd)
+    if out.decode('ascii').strip() != "":
+        print("Out: " + out.decode('ascii'))
+    if err is not None:
+        print("Err: " + err.decode('ascii'))
 
 def check_file(series_name, season, episode):
     try:

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+while true
+do
+    state=$(pacmd list-sinks | grep -A 4 "*" | grep "state: " | cut -c 9-)  
+    if [[ $state == SUSPENDED || $state == IDLE ]]
+    then
+        echo "State: $state. Not pausing screensaver."
+        sleep 2m
+    else
+        echo "State: $state. Pausing screensaver."
+        xscreensaver-command -deactivate > /dev/null
+        sleep 4m
+    fi
+done

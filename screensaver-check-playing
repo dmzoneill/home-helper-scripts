@@ -1,0 +1,71 @@
+#!/bin/bash
+
+displays=""
+while read id
+do
+    displays="$displays $id"
+done< <(xvinfo | sed -n 's/^screen #\([0-9]\+\)$/\1/p')
+
+checkFullscreen()
+{
+
+    # loop through every display looking for a fullscreen window
+    for display in $displays
+    do
+        #get id of active window and clean output
+        activ_win_id=`DISPLAY=:1.${display} xprop -root _NET_ACTIVE_WINDOW`
+        activ_win_id=${activ_win_id:40:9}
+
+        # Check if Active Window (the foremost window) is in fullscreen state
+        isActivWinFullscreen=`DISPLAY=:1.${display} xprop -id $activ_win_id | grep _NET_WM_STATE_FULLSCREEN`
+        if [[ "$isActivWinFullscreen" == *NET_WM_STATE_FULLSCREEN* ]];then
+            xscreensaver-command -deactivate
+            disabled=1
+        else
+            disabled=0
+        fi
+    done
+}
+
+while sleep 55
+do
+    checkFullscreen
+    if [ "$disabled" = "1" ]; then
+        echo "fullscreen"
+        continue
+    fi
+
+    players_list=$(gdbus call --session --dest org.freedesktop.DBus \
+        --object-path / --method org.freedesktop.DBus.ListNames | \
+        awk 'BEGIN { RS=","; } /org.mpris.MediaPlayer2./ { gsub(/[\[\]()\x27]/, ""); print $1; }')
+
+    for player in $players_list
+    do
+        echo "Player: $player"
+        state=$(gdbus call --session \
+            --dest $player \
+            --object-path /org/mpris/MediaPlayer2 \
+            --method org.freedesktop.DBus.Properties.Get \
+            "org.mpris.MediaPlayer2.Player" \
+            "PlaybackStatus")
+        echo "State: $state"
+
+        fullscreen=$(gdbus call --session \
+            --dest $player \
+            --object-path /org/mpris/MediaPlayer2 \
+            --method org.freedesktop.DBus.Properties.Get \
+            "org.mpris.MediaPlayer2" \
+            "Fullscreen")
+        echo "Fullscreen: $fullscreen"
+
+        if [ "$state" = "(<'Playing'>,)" -a "$fullscreen" = "(<true>,)" ]
+        then
+            echo "deactive"
+            echo $player $state $fullscreen send signal
+            xscreensaver-command -deactivate
+            break
+        else
+            echo $player $state $fullscreen
+        fi
+    done
+done
