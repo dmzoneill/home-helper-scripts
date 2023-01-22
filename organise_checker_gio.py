@@ -2,6 +2,7 @@
 
 import os
 from gi.repository import Gio
+import urllib.parse
 
 debug = True
 films = "/smb/films/Entertainment/Films"
@@ -25,9 +26,12 @@ def set_folder_art(path, icon):
     folder = Gio.File.new_for_path(path)
     icon_file = Gio.File.new_for_path(icon)
     info = folder.query_info(attribute, 0, None)
-    icon_uri = icon_file.get_uri()
-    info.set_attribute_string(attribute, icon_uri)
+    icon_url = icon_file.get_uri()
+    print(icon_url)
+    info.set_attribute_string(attribute, icon_url)
     folder.set_attributes_from_info(info, 0, None)
+    print(folder.query_info(attribute, 0, None).get_attribute_as_string(attribute))
+    print("..........")
 
 def update_folder_art(path):
     if os.path.exists(path + "/folder.jpg"):

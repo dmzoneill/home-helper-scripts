@@ -3,3 +3,4 @@ organise_log
 .skip
 debug
 error
+**/android-studio/**

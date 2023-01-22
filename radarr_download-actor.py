@@ -25,22 +25,23 @@ types = ["producer", "writer", "actor", "actress", "director"]
 for type in types:  
     print(" >>> " + type + " <<< ")
     try:
-        movies = actor_results['data']['filmography'][type]
-        for movie in movies:
-            title = movie.get('title')
-            year = movie.get('year')
-            print(str(title) + " " + str(year))
-            result = radarr.lookup_movie(str(title) + " " + str(year))
-            if len(result) == 0:
-                continue
+        if type in actor_results['data']['filmography']:
+            movies = actor_results['data']['filmography'][type]
+            for movie in movies:
+                title = movie.get('title')
+                year = movie.get('year')
+                print(str(title) + " " + str(year))
+                result = radarr.lookup_movie(str(title) + " " + str(year))
+                if len(result) == 0:
+                    continue
 
-            title = result[0]['title']
-            dbid = result[0]['tmdbId']
-            print(title)
-            print(dbid)
-            radarr.add_movie(dbid, 1, "/movies")
+                title = result[0]['title']
+                dbid = result[0]['tmdbId']
+                print(title)
+                print(dbid)
+                radarr.add_movie(dbid, 1, "/movies")
     except Exception as e:
         #print("fail ...")
         #print(e)
-        traceback.print_exc()
+         traceback.print_exc()
 

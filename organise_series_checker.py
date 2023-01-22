@@ -1,5 +1,7 @@
 import os
 import subprocess
+import urllib.parse
+import traceback
 
 delete = False
 special = False
@@ -19,10 +21,10 @@ root = "/series"
 suggested_series_rename = {}
 specials = []
 
-def set_folder_art(series_name):   
+def set_folder_art(series_name):
     gio_cmd = "gio set -t unset \"" + root + "/" + series_name + "\" metadata::custom-icon"
     if os.path.exists(root + "/" + series_name + "/folder.jpg"):
-        gio_cmd = "gio set \"" + root + "/" + series_name + "\" metadata::custom-icon \"file://" + root + "/" + series_name + "/folder.jpg\""
+        gio_cmd = "gio set \"" + root + "/" + series_name + "\" metadata::custom-icon \"file://" + root + "/" + urllib.parse.quote(series_name) + "/folder.jpg\""
     # os.system(gio_cmd)     
     proc = subprocess.Popen(gio_cmd, stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
@@ -35,7 +37,7 @@ def set_folder_art(series_name):
 def set_folder_art_season(series_name, season):   
     gio_cmd = "gio set -t unset \"" + root + "/" + series_name + "/" + season + "\" metadata::custom-icon"
     if os.path.exists(root + "/" + series_name + "/" + season + "/folder.jpg"):
-        gio_cmd = "gio set \"" + root + "/" + series_name + "/" + season + "\" metadata::custom-icon \"file://" + root + "/" + series_name  + "/" + season + "/folder.jpg\""
+        gio_cmd = "gio set \"" + root + "/" + series_name + "/" + season + "\" metadata::custom-icon \"file://" + root + "/" + urllib.parse.quote(series_name)  + "/" + urllib.parse.quote(season) + "/folder.jpg\""
     # os.system(gio_cmd)     
     proc = subprocess.Popen(gio_cmd, stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
@@ -60,7 +62,9 @@ def check_file(series_name, season, episode):
             #print("filebot -rename --db TheTVDB -non-strict --action move \"" + root + "/" + series_name + "/Season" + season + "/" + suggested_series_rename[rename_from] + "\"" );
             if delete:
                 os.remove(root + "/" + series_name + "/" + season + "/" + episode)
-    except:
+    except Exception as e:
+        print(traceback.format_exc())
+        print(e)
         print("Except: " + series_name + " - " + season)
 
 def check_season(series_name, season):
