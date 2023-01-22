@@ -10,9 +10,11 @@ series = "/smb/series/Entertainment/Series"
 attribute = "metadata::custom-icon"
 ignore = [".DS_Store", ".hidden"]
 
-def debug(s, override = False):
+
+def debug(s, override=False):
     if debug and not override:
         print(s)
+
 
 def unset_folder_art(path):
     debug("Unset: " + path)
@@ -20,6 +22,7 @@ def unset_folder_art(path):
     info = folder.query_info(attribute, 0, None)
     info.set_attribute(attribute, Gio.FileAttributeType.INVALID, 0)
     folder.set_attributes_from_info(info, 0, None)
+
 
 def set_folder_art(path, icon):
     debug("Set: " + path)
@@ -33,15 +36,18 @@ def set_folder_art(path, icon):
     print(folder.query_info(attribute, 0, None).get_attribute_as_string(attribute))
     print("..........")
 
+
 def update_folder_art(path):
     if os.path.exists(path + "/folder.jpg"):
         set_folder_art(path, path + "/folder.jpg")
     else:
-        unset_folder_art(path)    
+        unset_folder_art(path)
+
 
 def update(direct):
     for name in sorted(os.listdir(direct)):
         update_folder_art(direct + "/" + name)
+
 
 def show_empty_folder_art(path):
     folder = Gio.File.new_for_path(path)
@@ -59,11 +65,13 @@ def show_empty_folder_art(path):
         except Exception as error:
             debug(str(error), True)
 
+
 def show_unset(direct):
     for name in sorted(os.listdir(direct)):
         if name in ignore:
             continue
         show_empty_folder_art(direct + "/" + name)
+
 
 if __name__ == "__main__":
     update(films)

@@ -4,36 +4,38 @@ from os import listdir, remove, rename
 from os.path import isfile, join, getsize
 from pprint import pprint
 
-path = r'/films'
+path = r"/films"
 
 ignored = [
-    'jpg',
-    'hidden',
-    'xattr',
-    'nfo',
-    'idx',
-    'sub',
-    'srt',
-    'ts',
-    'smi',
-    'png',
-    'sup'
+    "jpg",
+    "hidden",
+    "xattr",
+    "nfo",
+    "idx",
+    "sub",
+    "srt",
+    "ts",
+    "smi",
+    "png",
+    "sup",
 ]
 
 
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
-pattern = "([a-zA-Z0-9,\-\.&! ]*|[a-zA-Z0-9',\-\.&! ]*) (\([0-9]{4}\))\.(avi|mkv|mp4|m4v)"
+pattern = (
+    "([a-zA-Z0-9,\-\.&! ]*|[a-zA-Z0-9',\-\.&! ]*) (\([0-9]{4}\))\.(avi|mkv|mp4|m4v)"
+)
 
 
 def iterate_films():
@@ -41,15 +43,21 @@ def iterate_films():
     film_dirs = sorted([f for f in listdir(path) if not isfile(join(path, f))])
 
     for filmdir in film_dirs:
-        films = sorted([f for f in listdir(path + "/" + filmdir) if isfile(join(path + "/" + filmdir, f))])
+        films = sorted(
+            [
+                f
+                for f in listdir(path + "/" + filmdir)
+                if isfile(join(path + "/" + filmdir, f))
+            ]
+        )
         to_check = []
 
         for file in films:
             pos = file.rfind(".")
-            extension = file[pos+1:len(file)]
+            extension = file[pos + 1 : len(file)]
             if extension not in ignored:
                 to_check.append(file)
-        
+
         if len(to_check) <= 1:
             continue
 
@@ -102,7 +110,6 @@ def iterate_films():
         print("no match")
         print(fullname0)
         print(fullname1)
-
 
 
 if __name__ == "__main__":
