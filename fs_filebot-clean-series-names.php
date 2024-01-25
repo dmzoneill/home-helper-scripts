@@ -14,4 +14,4 @@ function Scan($dir) {
     }
 }
 
-Scan("/series");
+Scan("/tv");

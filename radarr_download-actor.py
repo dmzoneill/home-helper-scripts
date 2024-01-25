@@ -1,5 +1,5 @@
 # importing the module
-import imdb
+from imdb import Cinemagoer
 from pyarr import RadarrAPI
 import argparse
 import traceback
@@ -14,10 +14,9 @@ host_url = "http://127.0.0.1:7878"
 api_key = os.getenv("RADARR_KEY")
 
 radarr = RadarrAPI(host_url, api_key)
-ia = imdb.IMDb()
+ia = Cinemagoer()
 
 code = args.IMDBActorID
-print(ia.get_person(code))
 
 actor_results = ia.get_person_filmography(code)
 types = ["producer", "writer", "actor", "actress", "director"]
@@ -37,8 +36,6 @@ for type in types:
 
                 title = result[0]["title"]
                 dbid = result[0]["tmdbId"]
-                print(title)
-                print(dbid)
                 radarr.add_movie(dbid, 1, "/movies")
     except Exception as e:
         # print("fail ...")

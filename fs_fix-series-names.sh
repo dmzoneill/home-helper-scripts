@@ -1,7 +1,7 @@
 #!/bin/bash
 IFS=$'\n'
 
-cd /smb/synology/Entertainment/Series/.
+cd /tv/.
 
 if [ $? -eq 1 ]; then
     exit 1
