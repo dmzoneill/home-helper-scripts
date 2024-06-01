@@ -42,10 +42,10 @@ def set_folder_art(series_name):
     proc = subprocess.Popen(gio_cmd, stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
     print(gio_cmd)
-    if out.decode("ascii").strip() != "":
-        print("Out: " + out.decode("ascii"))
+    if out.decode("utf-8").strip() != "":
+        print("Out: " + out.decode("utf-8"))
     if err is not None:
-        print("Err: " + err.decode("ascii"))
+        print("Err: " + err.decode("utf-8"))
 
 
 def set_folder_art_season(series_name, season):
@@ -78,10 +78,10 @@ def set_folder_art_season(series_name, season):
     proc = subprocess.Popen(gio_cmd, stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
     print(gio_cmd)
-    if out.decode("ascii").strip() != "":
-        print("Out: " + out.decode("ascii"))
+    if out.decode("utf-8").strip() != "":
+        print("Out: " + out.decode("utf-8"))
     if err is not None:
-        print("Err: " + err.decode("ascii"))
+        print("Err: " + err.decode("utf-8"))
 
 
 def check_file(series_name, season, episode):

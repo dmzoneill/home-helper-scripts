@@ -28,7 +28,8 @@ class MissingEpisodes:
             + self.sonarr_api_key
         )
         result = requests.get(series_json_endpoint)
-        self.all_series = json.loads(result.text)
+        # self.all_series = json.loads(result.text)
+        print(result.content)
 
         for show in self.all_series:
             for season in show["seasons"]:
