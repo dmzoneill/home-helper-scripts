@@ -1,5 +1,9 @@
 # Home Helper Scripts
 
+<p align="center">
+  <img src=".github/logo.png" alt="home-helper-scripts logo" width="128" />
+</p>
+
 A personal collection of scripts for looking after a home media server.
 
 ## Contents
