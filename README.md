@@ -4,7 +4,7 @@ A personal collection of scripts for looking after a home media server.
 
 ## Contents
 
-The file name prefix shows what each script works on:
+The filename prefix shows what each script works on:
 
 - `deluge_*`: move completed torrents and pause completed public
   torrents through the Deluge RPC API.
@@ -27,7 +27,7 @@ The file name prefix shows what each script works on:
 ## Usage
 
 Each script runs on its own. Paths such as `/smb/films` and
-`/series/` are hard-coded, and API keys and passwords are read from
+`/series/` are hardcoded, and API keys and passwords are read from
 environment variables such as `DELUGE_PASSWORD` and `JACKETT_KEY`.
 
 ## License
